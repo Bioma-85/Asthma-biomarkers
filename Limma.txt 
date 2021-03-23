@@ -1,0 +1,49 @@
+
+
+BiocManager::install("limma") 
+BiocManager::install("Biobase") 
+
+df = read.table("limma.txt", header=TRUE, sep="\t", quote = "\"", fill=TRUE)
+
+library(limma)
+library (Biobase)
+
+
+eset <- readExpressionSet("limma.txt", header=TRUE, sep="\t", fill=TRUE, row.names=NULL)
+
+View(eset)
+
+
+design <- model.matrix(~ 0+factor(c(1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2)))
+
+
+
+colnames(design) <- c("group1", "group2")
+
+fit <- lmFit(eset, design)
+
+contrast.matrix <- makeContrasts(group2-group1, levels=design)
+
+
+fit2 <- contrasts.fit(fit, contrast.matrix)
+
+fit2 <- eBayes(fit2)
+
+#number=22283 this is the number of probe given 
+
+
+results <- topTable(fit2, coef=1, adjust="fdr", number=20607)
+write.table(results, file="limma.csv", sep=",", col.names=NA)
+
+
+
+
+
+
+
+
+
+
+
+
+
