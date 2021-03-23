@@ -1,5 +1,3 @@
-# Asthma-biomarkers
-To identify biomarkers related to asthma severity 
 
 RMA normalization of microarray data
 
