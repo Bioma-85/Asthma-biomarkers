@@ -1,6 +1,6 @@
 
 
-# Install Packages: 
+### Install Packages: 
 
 BiocManager::install("affy") 
 BiocManager::install("hgu133a.db") 
@@ -8,44 +8,57 @@ BiocManager::install("hgu133acdf")
 
 
 
-# Calling Libraries:
-
+### Calling Libraries:
 
 library(affy)
 library(hgu133a.db)
 library(hgu133acdf)
 
 
-# Set working Directory:
+### Set working Directory for normalization:
 
-setwd("~/Desktop/asthma_research_file")          # the name of folder which contains ".CELL" raw file
+setwd("~/Desktop/asthma_research_file")   
+      
+# "asthma_research_file" is the name  of folder which contains ".CELL" raw file 
 
-# Data Normalization:
+
+### Data Normalization:
 
 f <-list.files(pattern = ".CEL")
-f   # it will list the name of all .CEL files in the folder
 
+# to look at the name of .CEL files in the folder
+f                                               
 
+# here we have 10 .CELL files, or (1:n), n is equal to number of .CELL files to be normalized
 
-j = 0                             # using a loop
+j = 0                            
 i = 0
 
-for (i=1, i<=j,j++ in 1:10)        # n=10 or the n is equal to number of .CELL files to be normalized
+for (i=1, i<=j,j++ in 1:10)                      
 
 {
+
  raw.data <- ReadAffy(verbose = FALSE, filenames = f[I], cdfname = "hgu133acdf")
  data.rma.norm = rma(raw.data)
 
 }
 
 
+
+# to get the expression estimates for each array
 rma = exprs(data.rma.norm)
+
+# to look at the result (first 2 rows and 2 columns)
+rma[1:2, 1:2]
+
+
+# Write RMA-normalized to file
 write.table(rma, file = "rma.txt", quote = FALSE, sep = "\t")
 
 
 
 
-# Annotation:
+### Annotation:
 
 probes=row.names(rma)
  
@@ -57,7 +70,9 @@ Entrez_IDs = unlist(mget(probes, hgu133aENTREZID, ifnotfound=NA))
 
 rma=cbind(probes,Symbols,Entrez_IDs,rma)
 
+# Write annotated file
 write.table(rma, file = "annotation.txt", quote = FALSE, sep = "\t", row.names = FALSE, col.names = TRUE)
+
 
 
 
