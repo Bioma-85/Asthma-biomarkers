@@ -38,7 +38,7 @@ for (i=1, i<=j,j++ in 1:10)
 
 {
 
- raw.data <- ReadAffy(verbose = FALSE, filenames = f[I], cdfname = "hgu133acdf")
+ raw.data <- ReadAffy(verbose = FALSE, filenames = f[i], cdfname = "hgu133acdf")
  data.rma.norm = rma(raw.data)
 
 }
